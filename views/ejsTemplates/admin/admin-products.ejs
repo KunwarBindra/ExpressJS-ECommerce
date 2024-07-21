@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../common/head.ejs') %>
+    <link rel="stylesheet" href="/css/product-card.css">
+</head>
+
+<body>
+    <%- include('../common/navbar.ejs') %>
+    <main>
+        <h1>Added Products</h1>
+        <div class="products-section">
+            <% if (prods.length > 0) { %>
+                <div class="product-grid">
+                    <% for (let i = 0; i < prods.length; i++) { %>
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="<%= prods[i].imageURL %>" alt="Product Image">
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title"><%= prods[i].title %></div>
+                                <div class="card-description">
+                                    <%= prods[i].description %>
+                                </div>
+                                <div class="card-price">$<%= prods[i].price %></div>
+                                <button class="edit-button">Edit Product</button>
+                                <button class="delete-button">Delete</button>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <p>No Products Available!</p>
+            <% } %>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../common/head.ejs') %>
+    <link rel="stylesheet" href="/css/product-card.css">
+</head>
+
+<body>
+    <%- include('../common/navbar.ejs') %>
+    <main>
+        <h1>Our Products</h1>
+        <div class="products-section">
+            <% if (prods.length > 0) { %>
+                <div class="product-grid">
+                    <% for (let i = 0; i < prods.length; i++) { %>
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="<%= prods[i].imageURL %>" alt="Product Image">
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title"><%= prods[i].title %></div>
+                                <div class="card-description">
+                                    <%= prods[i].description %>
+                                </div>
+                                <div class="card-price">$<%= prods[i].price %></div>
+                                <a href="/products/<%= prods[i].id %>" class="show-details-button">Show Details</a>
+                                <form action="/product/add-to-cart" method="POST">
+                                    <input type="hidden" name="id" value="<%= prods[i].id %>" />
+                                    <button type="submit" class="add-to-cart-button">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <p>No Products Available!</p>
+            <% } %>
+        </div>
+    </main>
+</body>
+
+</html>

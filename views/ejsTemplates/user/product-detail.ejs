@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../common/head.ejs') %>
+    <link rel="stylesheet" href="/css/product-detail.css" />
+  </head>
+  <body>
+    <%- include('../common/navbar.ejs') %>
+    <main>
+      <div class="product-detail">
+        <div class="product-title"><%= prod.title %></div>
+
+        <div class="product-image">
+          <img src="<%= prod.imageURL %>" alt="Product Image" />
+        </div>
+
+        <div class="product-description">
+          <p><%= prod.description %></p>
+        </div>
+
+        <div class="product-price">$<%= prod.price %></div>
+
+        <div>
+          <button class="add-to-cart-button">Add to Cart</button>
+          <button class="back-to-products" onclick="window.history.back()">
+            Back
+          </button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
