@@ -5,6 +5,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255);
 }
 .product-title {
   font-size: 2rem;
@@ -33,7 +34,7 @@
 .add-to-cart-button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #009688;
+  background-color: #313854;
   color: white;
   text-decoration: none;
   border: none;
@@ -47,7 +48,7 @@
 .back-to-products {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #001050;
+  background-color: #00796b;
   color: white;
   text-decoration: none;
   border: none;
@@ -56,5 +57,5 @@
   transition: background-color 0.3s ease;
 }
 .back-to-products:hover {
-  background-color: #00796b;
+  background-color: #00504d;
 }

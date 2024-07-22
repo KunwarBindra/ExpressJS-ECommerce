@@ -20,8 +20,11 @@
 
         <div class="product-price">$<%= prod.price %></div>
 
-        <div>
-          <button class="add-to-cart-button">Add to Cart</button>
+        <div style="display: flex; gap: 10px;">
+          <form action="/product/add-to-cart" method="POST">
+            <input type="hidden" name="id" value="<%= prod.id %>" />
+            <button type="submit" class="add-to-cart-button">Add to Cart</button>
+          </form>
           <button class="back-to-products" onclick="window.history.back()">
             Back
           </button>

@@ -24,8 +24,14 @@
                                     <%= prods[i].description %>
                                 </div>
                                 <div class="card-price">$<%= prods[i].price %></div>
-                                <button class="edit-button">Edit Product</button>
-                                <button class="delete-button">Delete</button>
+                                <form action="/admin/edit-product/<%= prods[i].id %>" method="POST">
+                                    <input type="hidden" name="id" value="<%= prods[i].id %>" />
+                                    <button type="submit" class="edit-button">Edit Product</button>
+                                </form>
+                                <form action="/admin/delete-product" method="POST">
+                                    <input type="hidden" name="id" value="<%= prods[i].id %>" />
+                                    <button type="submit" class="delete-button">Delete</button>
+                                </form>
                             </div>
                         </div>
                     <% } %>

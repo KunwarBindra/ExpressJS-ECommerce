@@ -47,22 +47,26 @@ module.exports = class Cart {
             cart.products = [...data.products]
             cart.totalPrice = parseFloat(data.totalPrice)
             let searchProductIndex = cart.products.findIndex(item => item.id == id)
-            let product = {...cart.products[searchProductIndex]}
-            let productPrice = product.price
-            let productQty = product.qty
-            cart.products = cart.products.filter(item => item.id != id)
-            if (cart.products.length) {
-                cart.totalPrice = parseFloat(cart.totalPrice) - (productQty * parseFloat(productPrice))
-            } else {
-                cart.totalPrice = 0
-            }
-            fs.writeFile(p, JSON.stringify(cart), (err) => {
-                if (err) {
-                    console.log(err)
+            if (searchProductIndex !== -1) {
+                let product = {...cart.products[searchProductIndex]}
+                let productPrice = product.price
+                let productQty = product.qty
+                cart.products = cart.products.filter(item => item.id != id)
+                if (cart.products.length) {
+                    cart.totalPrice = parseFloat(cart.totalPrice) - (productQty * parseFloat(productPrice))
                 } else {
-                    cb('success')
+                    cart.totalPrice = 0
                 }
-            })
+                fs.writeFile(p, JSON.stringify(cart), (err) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        cb('success')
+                    }
+                })
+            } else {
+                cb('product_not_added')
+            }
         })
     }
     static fetchCartData (cb) {

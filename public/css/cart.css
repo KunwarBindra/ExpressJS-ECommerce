@@ -9,6 +9,7 @@
   margin-bottom: 20px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255);
 }
 .product-image {
   flex: 0 0 150px;

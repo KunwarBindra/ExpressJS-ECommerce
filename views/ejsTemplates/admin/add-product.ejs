@@ -9,24 +9,27 @@
 <body>
     <%- include('../common/navbar.ejs') %>
     <main>
-        <form class="product-form" action="/admin/add-product" method="POST">
+        <form class="product-form" action="/admin/<% if (edit) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
             <div class="form-control">
                 <label for="title">Title</label>
-                <input type="text" name="title" id="title">
+                <input type="text" name="title" id="title" value="<% if (prod.title) { %><%= prod.title %><% } %>">
             </div>
             <div class="form-control">
                 <label for="price">Price</label>
-                <input type="number" name="price" id="price" step="0.01">
+                <input type="number" name="price" id="price" step="0.01" value="<% if (prod.price) { %><%= prod.price %><% } %>">
             </div>
             <div class="form-control">
                 <label for="imageURL">Image URL</label>
-                <input type="text" name="imageURL" id="imageURL">
+                <input type="text" name="imageURL" id="imageURL" value="<% if (prod.imageURL) { %><%= prod.imageURL %><% } %>">
             </div>
             <div class="form-control">
                 <label for="description">Description</label>
-                <textarea name="description" id="description" rows="5"></textarea>
+                <textarea name="description" id="description" rows="5"><% if (prod.description) { %><%= prod.description %><% } %></textarea>
             </div>
-            <button type="submit">Add Product</button>
+            <% if (edit) { %>
+                <input type="hidden" name="id" value="<%= prod.id %>" />
+            <% } %>
+            <button type="submit"><% if (edit) { %>Edit Product<% } else { %>Add Product<% } %></button>
         </form>
     </main>
 </body>

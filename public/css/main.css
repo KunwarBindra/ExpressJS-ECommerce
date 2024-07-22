@@ -2,10 +2,13 @@ body {
     padding: 0;
     margin: 0;
     font-family: sans-serif;
+    height: 100vh;
 }
 
 main {
     padding: 1rem;
+    background-color: #cfcfcf4d;
+    height: 100%;
 }
 
 h1 {

@@ -15,6 +15,7 @@
   overflow: hidden;
   margin: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255);
 }
 .card-image {
   height: 200px;
@@ -46,7 +47,7 @@
   width: 100%;
   padding: 10px 0;
   text-align: center;
-  background-color: #001050;
+  background-color: #313854;
   color: white;
   text-decoration: none;
   border: none;
@@ -55,14 +56,14 @@
   transition: background-color 0.3s ease;
 }
 .show-details-button:hover {
-  background-color: #00796b;
+  background-color: #001050;
 }
 .edit-button {
   display: block;
   width: 100%;
   padding: 10px 0;
   text-align: center;
-  background-color: #001050;
+  background-color: #313854;
   color: white;
   text-decoration: none;
   border: none;
@@ -71,7 +72,7 @@
   transition: background-color 0.3s ease;
 }
 .edit-button:hover {
-  background-color: #00796b;
+  background-color: #001050;
 }
 .add-to-cart-button {
   margin-top: 10px;
@@ -89,7 +90,7 @@
   transition: background-color 0.3s ease;
 }
 .add-to-cart-button:hover {
-  background-color: #001050;
+  background-color: #00504d;
 }
 .delete-button {
   margin-top: 10px;
@@ -107,5 +108,5 @@
   transition: background-color 0.3s ease;
 }
 .delete-button:hover {
-  background-color: #001050;
+  background-color: #00504d;
 }
