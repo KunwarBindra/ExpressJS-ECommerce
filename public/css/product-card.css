@@ -10,12 +10,12 @@
 
 .card {
   width: 300px;
-  border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
   margin: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 8px #2C333A;
+  background-color: #2C333A;
+  color: #DCDFE4;
 }
 .card-image {
   height: 200px;
@@ -39,7 +39,7 @@
 .card-price {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #ff0303;
+  color: #E56910;
   margin-bottom: 10px;
 }
 .show-details-button {
@@ -47,8 +47,8 @@
   width: 100%;
   padding: 10px 0;
   text-align: center;
-  background-color: #313854;
-  color: white;
+  background-color: #9FADBC;
+  color: #1D2125;
   text-decoration: none;
   border: none;
   border-radius: 0;
@@ -56,15 +56,15 @@
   transition: background-color 0.3s ease;
 }
 .show-details-button:hover {
-  background-color: #001050;
+  background-color: #738496;
 }
 .edit-button {
   display: block;
   width: 100%;
   padding: 10px 0;
   text-align: center;
-  background-color: #313854;
-  color: white;
+  background-color: #9FADBC;
+  color: #1D2125;
   text-decoration: none;
   border: none;
   border-radius: 0;
@@ -72,7 +72,7 @@
   transition: background-color 0.3s ease;
 }
 .edit-button:hover {
-  background-color: #001050;
+  background-color: #738496;
 }
 .add-to-cart-button {
   margin-top: 10px;
@@ -81,8 +81,8 @@
   width: 100%;
   padding: 10px 0;
   text-align: center;
-  background-color: #00796b;
-  color: white;
+  background-color: #C25100;
+  color: #F7F8F9;
   text-decoration: none;
   border: none;
   border-radius: 0;
@@ -90,7 +90,7 @@
   transition: background-color 0.3s ease;
 }
 .add-to-cart-button:hover {
-  background-color: #00504d;
+  background-color: #A54800;
 }
 .delete-button {
   margin-top: 10px;
@@ -99,8 +99,8 @@
   width: 100%;
   padding: 10px 0;
   text-align: center;
-  background-color: #00796b;
-  color: white;
+  background-color: #C25100;
+  color: #F7F8F9;
   text-decoration: none;
   border: none;
   border-radius: 0;
@@ -108,5 +108,5 @@
   transition: background-color 0.3s ease;
 }
 .delete-button:hover {
-  background-color: #00504d;
+  background-color: #A54800;
 }

@@ -14,7 +14,7 @@
     width: 100%;
     font-size: 15px;
     font-weight: 600;
-    color: #001050;
+    color: #E56910;
 }
 
 .form-control label {
@@ -23,22 +23,24 @@
 
 .form-control input, .form-control textarea {
     outline: none;
-    border: 1px solid #001050;
+    background-color: #DCDFE4;
     font: inherit;
     border-radius: 5px;
+    padding: 5px;
 }
 
 button {
     font: inherit;
-    border: 1px solid #ff0303;
-    color: #ff0303;
-    background: white;
+    border: 1px solid #E56910;
+    color: #E56910;
+    background: #38414A;
     border-radius: 3px;
     cursor: pointer;
+    padding: 5px;
 }
 
 button:hover,
 button:active {
-    background-color: #ff0303;
-    color: white;
+    background-color: #E56910;
+    color: #DCDFE4;
 }
