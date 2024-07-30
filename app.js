@@ -2,6 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const getPage = require("./controllers/404");
+const sequelize = require("./util/database");
+const User = require("./models/users");
+const Product = require("./models/products");
 
 const app = express();
 
@@ -13,6 +16,20 @@ app.set("views", path.join(__dirname, "views", "ejsTemplates"));
 
 app.use(bodyParser.urlencoded({ extended: false })); // will parse bodies sent through forms, other type of parsers will be used for other bodies
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use((req, res, next) => {
+  User.findByPk(1)
+    .then((res) => {
+      req.user = res;
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(Product);
 
 // middlewares are functions through which request passes until a response is sent
 // In .use -> exact path won't be matched, even if partial path is matched, registered middleware will execute
@@ -37,4 +54,26 @@ app.use(shop);
 
 app.use(getPage.get404);
 
-app.listen(3000);
+sequelize
+  .sync()
+  // .sync({ force: true }) // will drop all tables in the db and reinitialize them each time the sever restarts
+  .then((res) => {
+    User.findByPk(1)
+      .then((res) => {
+        if (res) return res;
+        return User.create({
+          firstName: "Kunwar",
+          lastName: "Bindra",
+          email: "kunwarjeetbindra@gmail.com",
+        });
+      })
+      .then((res) => {
+        app.listen(3000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
