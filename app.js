@@ -5,6 +5,8 @@ const getPage = require("./controllers/404");
 const sequelize = require("./util/database");
 const User = require("./models/users");
 const Product = require("./models/products");
+const Cart = require("./models/cart");
+const CartItem = require("./models/cartItem");
 
 const app = express();
 
@@ -30,6 +32,10 @@ app.use((req, res, next) => {
 
 Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Product);
+Cart.belongsTo(User);
+User.hasOne(Cart);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 // middlewares are functions through which request passes until a response is sent
 // In .use -> exact path won't be matched, even if partial path is matched, registered middleware will execute
@@ -65,6 +71,14 @@ sequelize
           firstName: "Kunwar",
           lastName: "Bindra",
           email: "kunwarjeetbindra@gmail.com",
+        });
+      })
+      .then((res) => {
+        res.getCart({ where: { id: 1 } }).then((cart) => {
+          if (cart) {
+            return cart;
+          }
+          return res.createCart();
         });
       })
       .then((res) => {

@@ -9,42 +9,40 @@
     <%- include('../common/navbar.ejs') %>
     <main>
       <div class="cart">
-        <% if (data.products.length > 0) { %> <% for (let i = 0; i <
-        data.products.length; i++) { %>
+        <% if (data.length > 0) { %> <% for (let i = 0; i <
+        data.length; i++) { %>
         <div class="product-card">
           <div class="product-image">
-            <img src="<%= data.products[i].imageURL %>" alt="Product Image" />
+            <img src="<%= data[i].imageURL %>" alt="Product Image" />
           </div>
           <div class="product-details">
-            <div class="product-title"><%= data.products[i].title %></div>
+            <div class="product-title"><%= data[i].title %></div>
             <div class="quantity">
-              <label for="quantity">Quantity:</label>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                value="<%= data.products[i].qty %>"
-                disabled
-              />
+              <label for="quantity">Quantity: <%= data[i].cartItem.quantity %></label>
             </div>
-            <form action="/product/delete-cart-product" method="POST">
-              <input
-                type="hidden"
-                name="id"
-                value="<%= data.products[i].id %>"
-              />
-              <button type="submit" class="delete-button">Remove</button>
-            </form>
+            <div style="display: flex; gap: 7.5px;">
+              <form action="/product/delete-cart-product" method="POST">
+                <input
+                  type="hidden"
+                  name="id"
+                  value="<%= data[i].id %>"
+                />
+                <button type="submit" class="delete-button">-</button>
+              </form>
+              <form action="/product/add-to-cart" method="POST">
+                <input
+                  type="hidden"
+                  name="id"
+                  value="<%= data[i].id %>"
+                />
+                <button type="submit" class="delete-button">+</button>
+              </form>
+            </div>
           </div>
         </div>
         <% } %> <% } else { %>
-        <p>Cart is empty!</p>
+        <p style="color: white;">Cart is empty!</p>
         <% } %>
-        <div class="total-section">
-          <div class="total-text">
-            Total Cart Price: $<%= data.totalPrice.toFixed(2) %>
-          </div>
-        </div>
       </div>
     </main>
   </body>

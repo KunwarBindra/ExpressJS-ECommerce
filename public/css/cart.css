@@ -1,15 +1,12 @@
-.cart {
-  max-width: 800px;
-  margin: 0 auto;
-}
 .product-card {
+  width: 800px;
   display: flex;
-  border: 1px solid #ccc;
   border-radius: 8px;
-  margin-bottom: 20px;
+  margin: 20px auto;
   overflow: hidden;
+  background-color: #9FADBC;
+  color: hsl(210, 12%, 13%);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: rgb(255, 255, 255);
 }
 .product-image {
   flex: 0 0 150px;
@@ -32,16 +29,17 @@
   margin-bottom: 10px;
 }
 .delete-button {
-  background-color: #f44336;
+  width: 20px;
+  height: 20px;
+  background-color: #E56910;
   color: white;
   border: none;
-  padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .delete-button:hover {
-  background-color: #d32f2f;
+  background-color: #E56910;
 }
 .total-section {
   margin-top: 20px;
