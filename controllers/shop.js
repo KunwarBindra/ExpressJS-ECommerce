@@ -1,5 +1,5 @@
 const Product = require("../models/products");
-const Cart = require("../models/cart");
+// const Cart = require("../models/cart");
 
 const getProductsHome = (req, res, next) => {
   // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
@@ -178,7 +178,9 @@ const deleteCartProduct = (req, res, next) => {
       if (newQty == 0) {
         product.cartItem.destroy();
       } else {
-        fetchedCart.addProduct(product, { through: { quantity: newQty, totalPrice: newQty * product.price } });
+        fetchedCart.addProduct(product, {
+          through: { quantity: newQty, totalPrice: newQty * product.price },
+        });
       }
     })
     .then(() => {
@@ -190,7 +192,49 @@ const deleteCartProduct = (req, res, next) => {
 };
 
 const getOrders = (req, res, next) => {
-  res.render("user/orders", { pageTitle: "Orders", active: "orders" });
+  req.user
+    .getOrders({ include: ["products"] })
+    .then((orders) => {
+      console.log(orders);
+      res.render("user/orders", { pageTitle: "Orders", active: "orders" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const createOrder = (req, res, next) => {
+  let fetchedCart;
+  req.user
+    .createOrder()
+    .then((order) => {
+      req.user
+        .getCart()
+        .then((cart) => {
+          fetchedCart = cart;
+          return cart.getProducts();
+        })
+        .then((products) => {
+          return order.addProducts(
+            products.map((product) => {
+              product.orderItem = { quantity: product.cartItem.quantity };
+              return product;
+            })
+          );
+        })
+        .then((order) => {
+          fetchedCart.setProducts(null);
+        })
+        .then(() => {
+          res.render("user/orders", { pageTitle: "Orders", active: "orders" });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 module.exports = {
@@ -201,4 +245,5 @@ module.exports = {
   getProducts,
   getCart,
   getOrders,
+  createOrder,
 };

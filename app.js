@@ -7,6 +7,8 @@ const User = require("./models/users");
 const Product = require("./models/products");
 const Cart = require("./models/cart");
 const CartItem = require("./models/cartItem");
+const Order = require("./models/order");
+const OrderItem = require("./models/orderItem");
 
 const app = express();
 
@@ -36,6 +38,9 @@ Cart.belongsTo(User);
 User.hasOne(Cart);
 Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
+Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsToMany(Product, { through: OrderItem });
 
 // middlewares are functions through which request passes until a response is sent
 // In .use -> exact path won't be matched, even if partial path is matched, registered middleware will execute

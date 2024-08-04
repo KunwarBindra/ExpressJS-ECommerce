@@ -16,4 +16,6 @@ shop.post("/product/add-to-cart", addProductHandlers.addToCart);
 
 shop.post("/product/delete-cart-product", addProductHandlers.deleteCartProduct);
 
+shop.post("/create-order", addProductHandlers.createOrder);
+
 module.exports = shop;

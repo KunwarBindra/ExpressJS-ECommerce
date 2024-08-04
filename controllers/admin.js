@@ -1,6 +1,5 @@
 // const products = []
 // const path = require("path");
-const { where } = require("sequelize");
 const Product = require("../models/products");
 
 const handleAddProductReq = (req, res, next) => {
