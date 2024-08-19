@@ -4,18 +4,32 @@ const Product = require("../models/products");
 const getProductsHome = (req, res, next) => {
   // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
 
-  // using simple class models
+  // using nodejs methods
   // Product.fetchAllProducts((data) => {
   //     res.render("user/home", { prods: data, pageTitle: "Home", active: "home" });
   // })
 
-  // using sql queries
+  // using SQL queries
   // Product.fetchAllProducts().then(result => {
   //     res.render("user/home", { prods: result[0], pageTitle: "Home", active: "home" });
   // })
 
   // using sequelize
-  Product.findAll()
+  // Product.findAll()
+  //   .then((products) => {
+  //     res.render("user/home", {
+  //       prods: products,
+  //       pageTitle: "Home",
+  //       active: "home",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.render("user/home", { prods: [], pageTitle: "Home", active: "home" });
+  //   });
+
+  // using mongoDb
+  Product.getProducts()
     .then((products) => {
       res.render("user/home", {
         prods: products,
@@ -44,11 +58,23 @@ const getProductDetails = (req, res, next) => {
   //     res.render("user/product-detail", { prod: result[0][0], pageTitle: result[0][0].title, active: "products" });
   // })
 
-  Product.findByPk(productId)
-    .then((product) => {
+  // Product.findByPk(productId)
+  //   .then((product) => {
+  //     res.render("user/product-detail", {
+  //       prod: product ? product : {},
+  //       pageTitle: product ? product.title : "Product",
+  //       active: "products",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  Product.getSingleProduct(productId)
+    .then((result) => {
       res.render("user/product-detail", {
-        prod: product ? product : {},
-        pageTitle: product ? product.title : "Product",
+        prod: result ? result : {},
+        pageTitle: result ? result.title : "Product",
         active: "products",
       });
     })
@@ -71,7 +97,25 @@ const getProducts = (req, res, next) => {
   // })
 
   // using sequelize
-  Product.findAll()
+  // Product.findAll()
+  //   .then((products) => {
+  //     res.render("user/products", {
+  //       prods: products,
+  //       pageTitle: "Products",
+  //       active: "products",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.render("user/products", {
+  //       prods: [],
+  //       pageTitle: "Products",
+  //       active: "products",
+  //     });
+  //   });
+
+  // using mongoDb
+  Product.getProducts()
     .then((products) => {
       res.render("user/products", {
         prods: products,

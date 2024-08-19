@@ -8,28 +8,42 @@ const handleAddProductReq = (req, res, next) => {
   const price = req.body.price;
   const imageURL = req.body.imageURL;
 
-  // const product = new Product(null, title, description, price, imageURL)
+  const product = new Product(null, title, description, price, imageURL);
 
   // products.push(req.body);
 
+  // using nodejs file methods
   // product.saveProduct((message) => {
   //     if (message == 'success') {
   //         res.redirect("/admin/products");
   //     }
   // })
 
+  // using SQL queries
   // product.saveProduct().then(result => {
   //     res.redirect("/admin/products");
   // }).catch(err => console.log(err))
 
-  req.user
-    .createProduct({
-      title: title,
-      description: description,
-      price: price,
-      imageURL: imageURL,
-    })
+  // using sequelize
+  // req.user
+  //   .createProduct({
+  //     title: title,
+  //     description: description,
+  //     price: price,
+  //     imageURL: imageURL,
+  //   })
+  //   .then((result) => {
+  //     res.redirect("/admin/products");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // using mongoDb
+  product
+    .save()
     .then((result) => {
+      console.log(result, "saved!");
       res.redirect("/admin/products");
     })
     .catch((err) => {
@@ -40,17 +54,33 @@ const handleAddProductReq = (req, res, next) => {
 const getEditProductPage = (req, res, next) => {
   const id = req.body.id;
 
+  // using nodejs file methods
   // Product.fetchProduct(id, (data) => {
   //     if (data.message != 'PRODUCT_NOT_FOUND') {
   //         res.render("admin/add-product", { prod: data, edit: true, pageTitle: "Edit Product", active: "admin-products" });
   //     }
   // })
 
-  req.user
-    .getProducts({ where: { id: id } })
+  // using sequelize
+  // req.user
+  //   .getProducts({ where: { id: id } })
+  //   .then((result) => {
+  //     res.render("admin/add-product", {
+  //       prod: result[0],
+  //       edit: true,
+  //       pageTitle: "Edit Product",
+  //       active: "admin-products",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  Product.getSingleProduct(id)
     .then((result) => {
+      console.log(result);
       res.render("admin/add-product", {
-        prod: result[0],
+        prod: result,
         edit: true,
         pageTitle: "Edit Product",
         active: "admin-products",
@@ -68,6 +98,7 @@ const handleEditProductReq = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedImageURL = req.body.imageURL;
 
+  // using nodejs methods
   // const product = new Product(id, updatedTitle, updatedDescription, updatedPrice, updatedImageURL)
   // product.saveProduct((message) => {
   //     if (message == 'success') {
@@ -75,6 +106,7 @@ const handleEditProductReq = (req, res, next) => {
   //     }
   // })
 
+  // using SQL queries
   // Product.editProduct(
   //   id,
   //   updatedTitle,
@@ -85,6 +117,7 @@ const handleEditProductReq = (req, res, next) => {
   //   res.redirect("/admin/products");
   // });
 
+  // using sequelize
   // req.user
   //   .getProducts({ where: { id: id } }) // Fetch the specific product by its id
   //   .then((products) => {
@@ -107,20 +140,38 @@ const handleEditProductReq = (req, res, next) => {
   //     console.log(err);
   //   });
 
-  Product.update(
-    {
-      title: updatedTitle,
-      description: updatedDescription,
-      price: updatedPrice,
-      imageURL: updatedImageURL,
-    },
-    {
-      where: {
-        id: id,
-      },
-    }
-  )
+  // Product.update(
+  //   {
+  //     title: updatedTitle,
+  //     description: updatedDescription,
+  //     price: updatedPrice,
+  //     imageURL: updatedImageURL,
+  //   },
+  //   {
+  //     where: {
+  //       id: id,
+  //     },
+  //   }
+  // )
+  //   .then((result) => {
+  //     res.redirect("/admin/products");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // using mongoDb
+  const product = new Product(
+    id,
+    updatedTitle,
+    updatedDescription,
+    updatedPrice,
+    updatedImageURL
+  );
+  product
+    .save()
     .then((result) => {
+      console.log(result, "updated!");
       res.redirect("/admin/products");
     })
     .catch((err) => {
@@ -131,32 +182,40 @@ const handleEditProductReq = (req, res, next) => {
 const handleDeleteProductReq = (req, res, next) => {
   const id = req.body.id;
 
+  // using nodejs methods
   // Product.deleteProduct(id, (message) => {
   //     if (message == 'success') {
   //         res.redirect("/admin/products");
   //     }
   // })
 
+  // using SQL queries
   // Product.deleteProduct(id).then(() => {
   //   res.redirect("/admin/products");
   // });
 
-  req.user
-    .getProducts({ where: { id: id } })
-    .then((products) => {
-      if (products.length > 0) {
-        const product = products[0];
-        return product.destroy();
-      } else {
-        throw new Error("Product not found");
-      }
-    })
-    .then((result) => {
-      res.redirect("/admin/products");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  // using sequelize
+  // req.user
+  //   .getProducts({ where: { id: id } })
+  //   .then((products) => {
+  //     if (products.length > 0) {
+  //       const product = products[0];
+  //       return product.destroy();
+  //     } else {
+  //       throw new Error("Product not found");
+  //     }
+  //   })
+  //   .then((result) => {
+  //     res.redirect("/admin/products");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // using mongoDb
+  Product.deleteProduct(id).then(() => {
+    res.redirect("/admin/products");
+  });
 };
 
 const getAddProductPage = (req, res, next) => {
@@ -173,19 +232,37 @@ const getAddProductPage = (req, res, next) => {
 const getAdminProductList = (req, res, next) => {
   // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
 
-  // using simple class models
+  // using nodejs methods
   // Product.fetchAllProducts((data) => {
   //     res.render("admin/admin-products", { prods: data, pageTitle: "Admin Products", active: "admin-products" });
   // })
 
-  // using sql queries
+  // using SQL queries
   // Product.fetchAllProducts().then(result => {
   //     res.render("admin/admin-products", { prods: result[0], pageTitle: "Admin Products", active: "admin-products" });
   // })
 
   // using sequelize
-  req.user
-    .getProducts()
+  // req.user
+  //   .getProducts()
+  //   .then((products) => {
+  //     res.render("admin/admin-products", {
+  //       prods: products,
+  //       pageTitle: "Admin Products",
+  //       active: "admin-products",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.render("admin/admin-products", {
+  //       prods: [],
+  //       pageTitle: "Admin Products",
+  //       active: "admin-products",
+  //     });
+  //   });
+
+  // using mongoDb
+  Product.getProducts()
     .then((products) => {
       res.render("admin/admin-products", {
         prods: products,

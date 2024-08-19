@@ -24,9 +24,9 @@
                                     <%= prods[i].description %>
                                 </div>
                                 <div class="card-price">$<%= prods[i].price %></div>
-                                <a href="/products/<%= prods[i].id %>" class="show-details-button">Show Details</a>
+                                <a href="/products/<%= prods[i]._id %>" class="show-details-button">Show Details</a>
                                 <form action="/product/add-to-cart" method="POST">
-                                    <input type="hidden" name="id" value="<%= prods[i].id %>" />
+                                    <input type="hidden" name="id" value="<%= prods[i]._id %>" />
                                     <button type="submit" class="add-to-cart-button">Add to Cart</button>
                                 </form>
                             </div>

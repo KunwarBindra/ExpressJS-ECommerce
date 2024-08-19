@@ -24,11 +24,11 @@
             </div>
             <div style="display: flex; gap: 7.5px">
               <form action="/product/delete-cart-product" method="POST">
-                <input type="hidden" name="id" value="<%= data[i].id %>" />
+                <input type="hidden" name="id" value="<%= data[i]._id %>" />
                 <button type="submit" class="delete-button">-</button>
               </form>
               <form action="/product/add-to-cart" method="POST">
-                <input type="hidden" name="id" value="<%= data[i].id %>" />
+                <input type="hidden" name="id" value="<%= data[i]._id %>" />
                 <button type="submit" class="delete-button">+</button>
               </form>
             </div>
