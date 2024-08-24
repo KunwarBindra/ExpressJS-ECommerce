@@ -21,12 +21,13 @@ const mongodb = require("mongodb");
 const getDb = require("../util/database");
 
 module.exports = class Product {
-  constructor(_id, title, description, price, imageURL) {
+  constructor(_id, title, description, price, imageURL, userId) {
     this._id = _id ? new mongodb.ObjectId(_id) : null;
     this.title = title;
     this.description = description;
     this.price = price;
     this.imageURL = imageURL;
+    this.userId = userId;
   }
 
   // using mongoDb
@@ -40,8 +41,9 @@ module.exports = class Product {
     return db.collection("products").insertOne(this);
   }
 
-  static getProducts() {
+  static getProducts(userId) {
     const db = getDb.getDB();
+    // return db.collection("products").find({ userId: userId }).toArray();
     return db.collection("products").find().toArray();
   }
 
@@ -55,7 +57,9 @@ module.exports = class Product {
 
   static deleteProduct(id) {
     const db = getDb.getDB();
-    return db.collection("products").deleteOne({ _id: new mongodb.ObjectId(id) });
+    return db
+      .collection("products")
+      .deleteOne({ _id: new mongodb.ObjectId(id) });
   }
 
   // using nodejs file methods
@@ -111,7 +115,6 @@ module.exports = class Product {
   //         })
   //     })
   // }
-
 
   // using SQL queries
   //     saveProduct() {

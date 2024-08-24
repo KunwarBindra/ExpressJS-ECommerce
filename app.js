@@ -34,21 +34,23 @@ app.use((req, res, next) => {
   //   });
 
   // using mongodb
-  User.getUser("66c64fd875539bd063f826a7")
+  User.getUser("66ca1b9ed231cd019f3c8161")
     .then((result) => {
       if (result) {
         req.user = new User(
           result._id,
           result.firstname,
           result.firstname,
-          result.email
+          result.email,
+          result.cart
         );
       } else {
         const user = new User(
           null,
           "Kunwar",
           "Bindra",
-          "kunwarjeetbindra@gmail.com"
+          "kunwarjeetbindra@gmail.com",
+          { products: [], totalPrice: 0 }
         );
         user
           .save()

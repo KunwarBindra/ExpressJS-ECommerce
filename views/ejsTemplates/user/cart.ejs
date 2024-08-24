@@ -9,32 +9,37 @@
     <%- include('../common/navbar.ejs') %>
     <main>
       <div class="cart">
-        <% if (data.length > 0) { %> <% for (let i = 0; i < data.length; i++) {
+        <% if (data.products.length > 0) { %> <% for (let i = 0; i < data.products.length; i++) {
         %>
         <div class="product-card">
           <div class="product-image">
-            <img src="<%= data[i].imageURL %>" alt="Product Image" />
+            <img src="<%= data.products[i].imageURL %>" alt="Product Image" />
           </div>
           <div class="product-details">
-            <div class="product-title"><%= data[i].title %></div>
+            <div class="product-title"><%= data.products[i].title %></div>
             <div class="quantity">
               <label for="quantity"
-                >Quantity: <%= data[i].cartItem.quantity %></label
+                >Quantity: <%= data.products[i].quantity %></label
               >
             </div>
             <div style="display: flex; gap: 7.5px">
               <form action="/product/delete-cart-product" method="POST">
-                <input type="hidden" name="id" value="<%= data[i]._id %>" />
+                <input type="hidden" name="id" value="<%= data.products[i]._id %>" />
                 <button type="submit" class="delete-button">-</button>
               </form>
               <form action="/product/add-to-cart" method="POST">
-                <input type="hidden" name="id" value="<%= data[i]._id %>" />
+                <input type="hidden" name="id" value="<%= data.products[i]._id %>" />
                 <button type="submit" class="delete-button">+</button>
               </form>
             </div>
           </div>
         </div>
         <% } %>
+        <div class="total-section">
+          <div class="total-text">
+            Total Cart Price: $<%= data.totalPrice %>
+          </div>
+        </div>
         <div style="text-align: center">
           <form action="/create-order" method="POST">
             <button type="submit" class="checkout-button">Checkout</button>

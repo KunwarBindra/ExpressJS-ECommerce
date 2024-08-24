@@ -7,8 +7,16 @@ const handleAddProductReq = (req, res, next) => {
   const description = req.body.description;
   const price = req.body.price;
   const imageURL = req.body.imageURL;
+  const userId = req.user._id;
 
-  const product = new Product(null, title, description, price, imageURL);
+  const product = new Product(
+    null,
+    title,
+    description,
+    price,
+    imageURL,
+    userId
+  );
 
   // products.push(req.body);
 
@@ -97,6 +105,7 @@ const handleEditProductReq = (req, res, next) => {
   const updatedDescription = req.body.description;
   const updatedPrice = req.body.price;
   const updatedImageURL = req.body.imageURL;
+  const userId = req.user._id;
 
   // using nodejs methods
   // const product = new Product(id, updatedTitle, updatedDescription, updatedPrice, updatedImageURL)
@@ -166,7 +175,8 @@ const handleEditProductReq = (req, res, next) => {
     updatedTitle,
     updatedDescription,
     updatedPrice,
-    updatedImageURL
+    updatedImageURL,
+    userId
   );
   product
     .save()
@@ -262,7 +272,7 @@ const getAdminProductList = (req, res, next) => {
   //   });
 
   // using mongoDb
-  Product.getProducts()
+  Product.getProducts(req.user._id)
     .then((products) => {
       res.render("admin/admin-products", {
         prods: products,

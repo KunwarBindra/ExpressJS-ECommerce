@@ -27,13 +27,15 @@
 
 const mongodb = require("mongodb");
 const getDb = require("../util/database");
+const Product = require("./products");
 
 module.exports = class User {
-  constructor(_id, firstname, lastname, email) {
+  constructor(_id, firstname, lastname, email, cart) {
     this._id = _id ? new mongodb.ObjectId(_id) : null;
     this.firstname = firstname;
     this.lastname = lastname;
     this.email = email;
+    this.cart = cart;
   }
 
   save() {
@@ -52,5 +54,93 @@ module.exports = class User {
       .collection("users")
       .find({ _id: new mongodb.ObjectId(id) })
       .next();
+  }
+
+  getCart() {
+    const db = getDb.getDB();
+    const productIds = this.cart.products.map((info) => {
+      return info.productId;
+    });
+    return db
+      .collection("products")
+      .find({ _id: { $in: productIds } })
+      .toArray()
+      .then((products) => {
+        let cart = {};
+        cart.products = products.map((p) => {
+          return {
+            ...p,
+            quantity: this.cart.products.find(
+              (item) => item.productId.toString() == p._id.toString()
+            ).quantity,
+          };
+        });
+        cart.totalPrice = this.cart.totalPrice;
+        return cart;
+      });
+  }
+
+  addToCart(id) {
+    const db = getDb.getDB();
+    let cart = { products: [], totalPrice: 0 };
+    cart.products = [...this.cart.products];
+    cart.totalPrice = parseFloat(this.cart.totalPrice);
+    return Product.getSingleProduct(id)
+      .then((product) => {
+        let searchProductIndex = cart.products.findIndex(
+          (item) => item.productId.toString() == id.toString()
+        );
+        if (searchProductIndex != -1) {
+          let existingProduct = { ...cart.products[searchProductIndex] };
+          cart.products[searchProductIndex].quantity =
+            existingProduct.quantity + 1;
+        } else {
+          let insertedProduct = {
+            productId: new mongodb.ObjectId(id),
+            quantity: 1,
+          };
+          cart.products.push(insertedProduct);
+        }
+        cart.totalPrice = Math.floor(
+          parseFloat(cart.totalPrice) + parseFloat(product.price)
+        );
+        return db
+          .collection("users")
+          .updateOne({ _id: this._id }, { $set: { cart: cart } });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  removeFromCart(id) {
+    const db = getDb.getDB();
+    let cart = { products: [], totalPrice: 0 };
+    cart.products = [...this.cart.products];
+    cart.totalPrice = parseFloat(this.cart.totalPrice);
+    return Product.getSingleProduct(id)
+      .then((product) => {
+        let searchProductIndex = cart.products.findIndex(
+          (item) => item.productId.toString() == id.toString()
+        );
+        let existingProduct = { ...cart.products[searchProductIndex] };
+        cart.products[searchProductIndex].quantity =
+          existingProduct.quantity - 1;
+        if (cart.products[searchProductIndex].quantity == 0) {
+          let updatedCartProducts = cart.products.filter(
+            (item) => item.productId.toString() != id.toString()
+          );
+          cart.products = updatedCartProducts;
+        }
+        cart.totalPrice = Math.floor(
+          parseFloat(cart.totalPrice) - parseFloat(product.price)
+        );
+        return db
+          .collection("users")
+          .updateOne({ _id: this._id }, { $set: { cart: cart } });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 };

@@ -10,11 +10,11 @@ shop.get("/products", addProductHandlers.getProducts);
 
 // shop.get("/orders", addProductHandlers.getOrders);
 
-// shop.get("/cart", addProductHandlers.getCart);
+shop.get("/cart", addProductHandlers.getCart);
 
-// shop.post("/product/add-to-cart", addProductHandlers.addToCart);
+shop.post("/product/add-to-cart", addProductHandlers.addToCart);
 
-// shop.post("/product/delete-cart-product", addProductHandlers.deleteCartProduct);
+shop.post("/product/delete-cart-product", addProductHandlers.deleteCartProduct);
 
 // shop.post("/create-order", addProductHandlers.createOrder);
 
