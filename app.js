@@ -34,7 +34,7 @@ app.use((req, res, next) => {
   //   });
 
   // using mongodb
-  User.getUser("66ca1b9ed231cd019f3c8161")
+  User.getUser("66cc7a97603f3d817930c83c")
     .then((result) => {
       if (result) {
         req.user = new User(
@@ -42,7 +42,8 @@ app.use((req, res, next) => {
           result.firstname,
           result.firstname,
           result.email,
-          result.cart
+          result.cart,
+          result.orders
         );
       } else {
         const user = new User(
@@ -50,7 +51,8 @@ app.use((req, res, next) => {
           "Kunwar",
           "Bindra",
           "kunwarjeetbindra@gmail.com",
-          { products: [], totalPrice: 0 }
+          { products: [], totalPrice: 0 },
+          []
         );
         user
           .save()

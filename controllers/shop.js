@@ -287,33 +287,42 @@ const getOrders = (req, res, next) => {
 };
 
 const createOrder = (req, res, next) => {
-  let fetchedCart;
+  // let fetchedCart;
+  // req.user
+  //   .createOrder()
+  //   .then((order) => {
+  //     req.user
+  //       .getCart()
+  //       .then((cart) => {
+  //         fetchedCart = cart;
+  //         return cart.getProducts();
+  //       })
+  //       .then((products) => {
+  //         return order.addProducts(
+  //           products.map((product) => {
+  //             product.orderItem = { quantity: product.cartItem.quantity };
+  //             return product;
+  //           })
+  //         );
+  //       })
+  //       .then((order) => {
+  //         fetchedCart.setProducts(null);
+  //       })
+  //       .then(() => {
+  //         res.render("user/orders", { pageTitle: "Orders", active: "orders" });
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
   req.user
     .createOrder()
-    .then((order) => {
-      req.user
-        .getCart()
-        .then((cart) => {
-          fetchedCart = cart;
-          return cart.getProducts();
-        })
-        .then((products) => {
-          return order.addProducts(
-            products.map((product) => {
-              product.orderItem = { quantity: product.cartItem.quantity };
-              return product;
-            })
-          );
-        })
-        .then((order) => {
-          fetchedCart.setProducts(null);
-        })
-        .then(() => {
-          res.render("user/orders", { pageTitle: "Orders", active: "orders" });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    .then((result) => {
+      console.log(result);
     })
     .catch((err) => {
       console.log(err);

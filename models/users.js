@@ -30,12 +30,13 @@ const getDb = require("../util/database");
 const Product = require("./products");
 
 module.exports = class User {
-  constructor(_id, firstname, lastname, email, cart) {
+  constructor(_id, firstname, lastname, email, cart, orders) {
     this._id = _id ? new mongodb.ObjectId(_id) : null;
     this.firstname = firstname;
     this.lastname = lastname;
     this.email = email;
     this.cart = cart;
+    this.orders = orders;
   }
 
   save() {
@@ -138,6 +139,45 @@ module.exports = class User {
         return db
           .collection("users")
           .updateOne({ _id: this._id }, { $set: { cart: cart } });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  createOrder() {
+    const db = getDb.getDB();
+    const productIds = this.cart.products.map((info) => {
+      return info.productId;
+    });
+    return db
+      .collection("products")
+      .find({ _id: { $in: productIds } })
+      .toArray()
+      .then((products) => {
+        let cart = {};
+        cart.products = products.map((p) => {
+          return {
+            ...p,
+            quantity: this.cart.products.find(
+              (item) => item.productId.toString() == p._id.toString()
+            ).quantity,
+          };
+        });
+        cart.totalPrice = this.cart.totalPrice;
+        let orders = [...this.orders];
+        orders.push(cart);
+        return db
+          .collection("users")
+          .updateOne({ _id: this._id }, { $set: { orders: orders } });
+      })
+      .then(result => {
+        return db
+          .collection('users')
+          .updateOne(
+            { _id: new mongodb.ObjectId(this._id) },
+            { $set: { cart: { products: [], totalPrice: 0 } } }
+          );
       })
       .catch((err) => {
         console.log(err);
