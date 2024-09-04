@@ -3,13 +3,14 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const getPage = require("./controllers/404");
 // const sequelize = require("./util/database");
-const User = require("./models/users");
+// const User = require("./models/users");
 // const Product = require("./models/products");
 // const Cart = require("./models/cart");
 // const CartItem = require("./models/cartItem");
 // const Order = require("./models/order");
 // const OrderItem = require("./models/orderItem");
-const mongoConnect = require("./util/database");
+// const mongoConnect = require("./util/database");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -22,53 +23,53 @@ app.set("views", path.join(__dirname, "views", "ejsTemplates"));
 app.use(bodyParser.urlencoded({ extended: false })); // will parse bodies sent through forms, other type of parsers will be used for other bodies
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use((req, res, next) => {
-  // using sequelize
-  // User.findByPk(1)
-  //   .then((res) => {
-  //     req.user = res;
-  //     next();
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+// app.use((req, res, next) => {
+//   // using sequelize
+//   // User.findByPk(1)
+//   //   .then((res) => {
+//   //     req.user = res;
+//   //     next();
+//   //   })
+//   //   .catch((err) => {
+//   //     console.log(err);
+//   //   });
 
-  // using mongodb
-  User.getUser("66cc7a97603f3d817930c83c")
-    .then((result) => {
-      if (result) {
-        req.user = new User(
-          result._id,
-          result.firstname,
-          result.firstname,
-          result.email,
-          result.cart,
-          result.orders
-        );
-      } else {
-        const user = new User(
-          null,
-          "Kunwar",
-          "Bindra",
-          "kunwarjeetbindra@gmail.com",
-          { products: [], totalPrice: 0 },
-          []
-        );
-        user
-          .save()
-          .then((response) => {
-            console.log(response, "saved!");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+//   // using mongodb
+//   User.getUser("66cc7a97603f3d817930c83c")
+//     .then((result) => {
+//       if (result) {
+//         req.user = new User(
+//           result._id,
+//           result.firstname,
+//           result.firstname,
+//           result.email,
+//           result.cart,
+//           result.orders
+//         );
+//       } else {
+//         const user = new User(
+//           null,
+//           "Kunwar",
+//           "Bindra",
+//           "kunwarjeetbindra@gmail.com",
+//           { products: [], totalPrice: 0 },
+//           []
+//         );
+//         user
+//           .save()
+//           .then((response) => {
+//             console.log(response, "saved!");
+//           })
+//           .catch((err) => {
+//             console.log(err);
+//           });
+//       }
+//       next();
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 
 // Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 // User.hasMany(Product);
@@ -135,7 +136,14 @@ app.use(getPage.get404);
 //     console.log(err);
 //   });
 
-mongoConnect.mongoConnect((client) => {
-  // console.log(client);
-  app.listen(3000);
-});
+mongoose
+  .connect(
+    "mongodb+srv://kunwarjeetbindra:78Percent@cluster0.rxlpdkz.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0"
+  )
+  .then((client) => {
+    console.log(client, "connected!");
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });

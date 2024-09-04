@@ -7,16 +7,16 @@ const handleAddProductReq = (req, res, next) => {
   const description = req.body.description;
   const price = req.body.price;
   const imageURL = req.body.imageURL;
-  const userId = req.user._id;
+  // const userId = req.user._id;
 
-  const product = new Product(
-    null,
-    title,
-    description,
-    price,
-    imageURL,
-    userId
-  );
+  // const product = new Product(
+  //   null,
+  //   title,
+  //   description,
+  //   price,
+  //   imageURL,
+  //   userId
+  // );
 
   // products.push(req.body);
 
@@ -48,6 +48,24 @@ const handleAddProductReq = (req, res, next) => {
   //   });
 
   // using mongoDb
+  // product
+  //   .save()
+  //   .then((result) => {
+  //     console.log(result, "saved!");
+  //     res.redirect("/admin/products");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // using mongoose
+  const product = new Product({
+    title: title,
+    description: description,
+    price: price,
+    imageURL: imageURL,
+  });
+
   product
     .save()
     .then((result) => {
@@ -272,7 +290,25 @@ const getAdminProductList = (req, res, next) => {
   //   });
 
   // using mongoDb
-  Product.getProducts(req.user._id)
+  // Product.getProducts(req.user._id)
+  //   .then((products) => {
+  //     res.render("admin/admin-products", {
+  //       prods: products,
+  //       pageTitle: "Admin Products",
+  //       active: "admin-products",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.render("admin/admin-products", {
+  //       prods: [],
+  //       pageTitle: "Admin Products",
+  //       active: "admin-products",
+  //     });
+  //   });
+
+  // using mongoose
+  Product.find()
     .then((products) => {
       res.render("admin/admin-products", {
         prods: products,

@@ -29,7 +29,21 @@ const getProductsHome = (req, res, next) => {
   //   });
 
   // using mongoDb
-  Product.getProducts()
+  // Product.getProducts()
+  //   .then((products) => {
+  //     res.render("user/home", {
+  //       prods: products,
+  //       pageTitle: "Home",
+  //       active: "home",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.render("user/home", { prods: [], pageTitle: "Home", active: "home" });
+  //   });
+
+  // using mongoose
+  Product.find()
     .then((products) => {
       res.render("user/home", {
         prods: products,
@@ -70,7 +84,21 @@ const getProductDetails = (req, res, next) => {
   //     console.log(err);
   //   });
 
-  Product.getSingleProduct(productId)
+  // using mongodb
+  // Product.getSingleProduct(productId)
+  //   .then((result) => {
+  //     res.render("user/product-detail", {
+  //       prod: result ? result : {},
+  //       pageTitle: result ? result.title : "Product",
+  //       active: "products",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // using mongoose
+  Product.findById(productId)
     .then((result) => {
       res.render("user/product-detail", {
         prod: result ? result : {},
@@ -115,7 +143,25 @@ const getProducts = (req, res, next) => {
   //   });
 
   // using mongoDb
-  Product.getProducts()
+  // Product.getProducts()
+  //   .then((products) => {
+  //     res.render("user/products", {
+  //       prods: products,
+  //       pageTitle: "Products",
+  //       active: "products",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.render("user/products", {
+  //       prods: [],
+  //       pageTitle: "Products",
+  //       active: "products",
+  //     });
+  //   });
+
+  // using mongoose
+  Product.find()
     .then((products) => {
       res.render("user/products", {
         prods: products,
