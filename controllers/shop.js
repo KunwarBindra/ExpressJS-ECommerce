@@ -1,3 +1,4 @@
+const products = require("../models/products");
 const Product = require("../models/products");
 // const Cart = require("../models/cart");
 
@@ -202,11 +203,29 @@ const getCart = (req, res, next) => {
   //   });
 
   // using mongodb
+  // req.user
+  //   .getCart()
+  //   .then((result) => {
+  //     res.render("user/cart", {
+  //       data: result,
+  //       pageTitle: "Cart",
+  //       active: "cart",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // using mongoose
   req.user
-    .getCart()
+    .populate("cart.products.productId")
     .then((result) => {
+      let cart = {
+        products: result.cart.products,
+        totalPrice: req.user.cart.totalPrice,
+      };
       res.render("user/cart", {
-        data: result,
+        data: cart,
         pageTitle: "Cart",
         active: "cart",
       });
@@ -261,15 +280,17 @@ const addToCart = (req, res, next) => {
   //   });
 
   // using mongodb
-  req.user
-    .addToCart(productId)
-    .then((result) => {
-      console.log(result, "added to cart!");
-      res.redirect("/cart");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  Product.findById(productId).then((product) => {
+    req.user
+      .addToCart(product)
+      .then((result) => {
+        console.log(result, "added to cart!");
+        res.redirect("/cart");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 };
 
 const deleteCartProduct = (req, res, next) => {
@@ -309,15 +330,17 @@ const deleteCartProduct = (req, res, next) => {
   //   });
 
   // using mongodb
-  req.user
-    .removeFromCart(productId)
-    .then((result) => {
-      console.log(result, "removed from cart!");
-      res.redirect("/cart");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  Product.findById(productId).then((product) => {
+    req.user
+      .removeFromCart(product)
+      .then((result) => {
+        console.log(result, "removed from cart!");
+        res.redirect("/cart");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 };
 
 const getOrders = (req, res, next) => {

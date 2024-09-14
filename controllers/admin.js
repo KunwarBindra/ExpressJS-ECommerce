@@ -7,7 +7,7 @@ const handleAddProductReq = (req, res, next) => {
   const description = req.body.description;
   const price = req.body.price;
   const imageURL = req.body.imageURL;
-  // const userId = req.user._id;
+  const userId = req.user._id;
 
   // const product = new Product(
   //   null,
@@ -64,6 +64,7 @@ const handleAddProductReq = (req, res, next) => {
     description: description,
     price: price,
     imageURL: imageURL,
+    userId: userId
   });
 
   product
@@ -122,7 +123,7 @@ const handleEditProductReq = (req, res, next) => {
   const updatedDescription = req.body.description;
   const updatedPrice = req.body.price;
   const updatedImageURL = req.body.imageURL;
-  // const userId = req.user._id;
+  const userId = req.user._id;
 
   // using nodejs methods
   // const product = new Product(id, updatedTitle, updatedDescription, updatedPrice, updatedImageURL)
@@ -211,6 +212,7 @@ const handleEditProductReq = (req, res, next) => {
     description: updatedDescription,
     price: updatedPrice,
     imageURL: updatedImageURL,
+    userId: userId
   })
     .then((result) => {
       console.log(result, "updated!");

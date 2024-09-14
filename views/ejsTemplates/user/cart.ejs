@@ -13,10 +13,10 @@
         %>
         <div class="product-card">
           <div class="product-image">
-            <img src="<%= data.products[i].imageURL %>" alt="Product Image" />
+            <img src="<%= data.products[i].productId.imageURL %>" alt="Product Image" />
           </div>
           <div class="product-details">
-            <div class="product-title"><%= data.products[i].title %></div>
+            <div class="product-title"><%= data.products[i].productId.title %></div>
             <div class="quantity">
               <label for="quantity"
                 >Quantity: <%= data.products[i].quantity %></label
@@ -24,11 +24,11 @@
             </div>
             <div style="display: flex; gap: 7.5px">
               <form action="/product/delete-cart-product" method="POST">
-                <input type="hidden" name="id" value="<%= data.products[i]._id %>" />
+                <input type="hidden" name="id" value="<%= data.products[i].productId._id %>" />
                 <button type="submit" class="delete-button">-</button>
               </form>
               <form action="/product/add-to-cart" method="POST">
-                <input type="hidden" name="id" value="<%= data.products[i]._id %>" />
+                <input type="hidden" name="id" value="<%= data.products[i].productId._id %>" />
                 <button type="submit" class="delete-button">+</button>
               </form>
             </div>
