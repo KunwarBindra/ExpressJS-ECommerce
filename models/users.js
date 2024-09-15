@@ -2,6 +2,7 @@
 
 // const sequelize = require('../util/database')
 const mongoose = require("mongoose");
+const products = require("./products");
 
 // const User = sequelize.define('user', {
 //     id: {
@@ -265,9 +266,14 @@ userSchema.methods.removeFromCart = function (product) {
     parseFloat(cart.totalPrice) - parseFloat(product.price)
   );
   if (cart.totalPrice < 0) {
-    cart.totalPrice = 0
+    cart.totalPrice = 0;
   }
   this.cart = cart;
+  return this.save();
+};
+
+userSchema.methods.clearCart = function () {
+  this.cart = { products: [], totalPrice: 0 };
   return this.save();
 };
 

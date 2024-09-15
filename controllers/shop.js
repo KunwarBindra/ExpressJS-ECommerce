@@ -1,5 +1,6 @@
-const products = require("../models/products");
+// const products = require("../models/products");
 const Product = require("../models/products");
+const Order = require("../models/order");
 // const Cart = require("../models/cart");
 
 const getProductsHome = (req, res, next) => {
@@ -344,15 +345,26 @@ const deleteCartProduct = (req, res, next) => {
 };
 
 const getOrders = (req, res, next) => {
-  req.user
-    .getOrders({ include: ["products"] })
+  // req.user
+  //   .getOrders({ include: ["products"] })
+  //   .then((orders) => {
+  //     console.log(orders);
+  //     res.render("user/orders", { pageTitle: "Orders", active: "orders" });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // using mongoose
+  Order.find({ "user.userId": req.user._id })
     .then((orders) => {
-      console.log(orders);
-      res.render("user/orders", { pageTitle: "Orders", active: "orders" });
+      console.log(orders, 'orders fetched')
+      res.render("user/orders", {
+        pageTitle: "Orders",
+        active: "orders",
+      });
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 };
 
 const createOrder = (req, res, next) => {
@@ -388,14 +400,41 @@ const createOrder = (req, res, next) => {
   //     console.log(err);
   //   });
 
+  // using mongodb
+  // req.user
+  //   .createOrder()
+  //   .then((result) => {
+  //     console.log(result);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  // using mongoose
   req.user
-    .createOrder()
-    .then((result) => {
-      console.log(result);
+    .populate("cart.products.productId")
+    .then((user) => {
+      const products = user.cart.products.map((i) => {
+        return { quantity: i.quantity, product: { ...i.productId._doc } };
+      });
+      const order = new Order({
+        user: {
+          firstname: req.user.firstname,
+          lastname: req.user.lastname,
+          userId: req.user._id,
+        },
+        products: products,
+      });
+      return order.save();
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .then((result) => {
+      console.log(result, "order created");
+      return req.user.clearCart();
+    })
+    .then(() => {
+      res.redirect("/orders");
+    })
+    .catch((err) => console.log(err));
 };
 
 module.exports = {
