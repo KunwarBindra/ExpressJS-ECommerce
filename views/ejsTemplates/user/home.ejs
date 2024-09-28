@@ -27,6 +27,7 @@
                                 <a href="/products/<%= prods[i]._id %>" class="show-details-button">Show Details</a>
                                 <form action="/product/add-to-cart" method="POST">
                                     <input type="hidden" name="id" value="<%= prods[i]._id %>" />
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                                     <button type="submit" class="add-to-cart-button">Add to Cart</button>
                                 </form>
                             </div>

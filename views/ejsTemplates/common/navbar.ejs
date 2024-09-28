@@ -3,10 +3,19 @@
         <ul class="main-header__item-list">
             <li class="main-header__item"><a class="<%= active === 'home' ? 'active' : '' %>" href="/">Home</a></li>
             <li class="main-header__item"><a class="<%= active === 'products' ? 'active' : '' %>" href="/products">Inventory</a></li>
-            <li class="main-header__item"><a class="<%= active === 'cart' ? 'active' : '' %>" href="/cart">Cart</a></li>
-            <li class="main-header__item"><a class="<%= active === 'orders' ? 'active' : '' %>" href="/orders">Orders</a></li>
-            <li class="main-header__item"><a class="<%= active === 'add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product</a></li>
-            <li class="main-header__item"><a class="<%= active === 'admin-products' ? 'active' : '' %>" href="/admin/products">Admin</a></li>
+            <% if (isAuthenticated) { %>
+                <li class="main-header__item"><a class="<%= active === 'cart' ? 'active' : '' %>" href="/cart">Cart</a></li>
+                <li class="main-header__item"><a class="<%= active === 'orders' ? 'active' : '' %>" href="/orders">Orders</a></li>
+                <li class="main-header__item"><a class="<%= active === 'add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product</a></li>
+                <li class="main-header__item"><a class="<%= active === 'admin-products' ? 'active' : '' %>" href="/admin/products">Admin</a></li>
+            <% } %>
+            <% if (!isAuthenticated) { %>
+                <li class="main-header__item"><a class="<%= active === 'login' ? 'active' : '' %>" href="/login">Login</a></li>
+                <li class="main-header__item"><a class="<%= active === 'sign-up' ? 'active' : '' %>" href="/sign-up">Sign-up</a></li>
+            <% } %>
+            <% if (isAuthenticated) { %>
+                <li class="main-header__item"><a class="<%= active === 'logout' ? 'active' : '' %>" href="/logout">Logout</a></li>
+            <% } %>
         </ul>
     </nav>
 </header>

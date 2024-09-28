@@ -11,8 +11,20 @@ const User = require("./models/users");
 // const OrderItem = require("./models/orderItem");
 // const mongoConnect = require("./util/database");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoDbStore = require("connect-mongodb-session")(session); // this will yield a constructor function
+const csrf = require("csurf");
+
+const mongoDbUri =
+  "mongodb+srv://kunwarjeetbindra:78Percent@cluster0.rxlpdkz.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0";
 
 const app = express();
+const store = new MongoDbStore({
+  uri: mongoDbUri,
+  collection: "sessions", // here my sessions will be stored in mongodb
+  // expires: // when the session should expire and it will be automatically be cleaned by mongodb
+});
+const csrfProtection = csrf();
 
 // .set allows us to set any value globally across application, this way data can be shared using .get() across app
 // we are telling express that we wanna compile dynamic templates using pug / ejs / handlebars
@@ -22,6 +34,20 @@ app.set("views", path.join(__dirname, "views", "ejsTemplates"));
 
 app.use(bodyParser.urlencoded({ extended: false })); // will parse bodies sent through forms, other type of parsers will be used for other bodies
 app.use(express.static(path.join(__dirname, "public")));
+// session will store a cookie in the browser which is sent with every request to the server, that cookie is validated by the server, if there's any existing session with that cookie in the db, the user will be authenticated
+// different browsers will be treated as seperate users
+app.use(
+  session({
+    secret: "jbfvkVigfVHGLVVBVbKHGLGHSLHGSLBG69QQ93GFQ9GFQ",
+    resave: false,
+    saveUninitialized: false,
+    store: store, // for every request session is fetched from mongodb with the help of mongodb store
+  })
+); // passing js object within session function to configure session setup
+// resave means that session will not be saved on every request that is served, but only if something was changed in the session
+// saveUninitialized means no session gets saved for a request where it doesn't need to be saved because nothing was changed about it
+
+app.use(csrfProtection);
 
 app.use((req, res, next) => {
   //   // using sequelize
@@ -70,35 +96,19 @@ app.use((req, res, next) => {
   //       console.log(err);
   //     });
   // using mongoose
-  User.findById("66e5e1adc7b81bf755eabb90")
-    .then((result) => {
-      if (result) {
-        console.log(result, 'user fetched')
+  if (!req?.session?.user) {
+    next();
+  } else {
+    User.findById(req?.session?.user?._id)
+      .then((result) => {
+        console.log(result, "user fetched");
         req.user = result;
-      } else {
-        const user = new User({
-          firstname: "Kunwar",
-          lastname: "Bindra",
-          email: "kunwarjeetbindra@gmail.com",
-          cart: {
-            products: [],
-            totalPrice: 0
-          },
-        });
-        user
-          .save()
-          .then((response) => {
-            console.log(response, "new user saved!");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+        next();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 });
 
 // Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
@@ -128,9 +138,11 @@ app.use((req, res, next) => {
 
 const admin = require("./Routes/admin");
 const shop = require("./Routes/shop");
+const auth = require("./Routes/auth");
 
 app.use("/admin", admin.adminRoutes);
 app.use(shop);
+app.use(auth);
 
 app.use(getPage.get404);
 
@@ -167,9 +179,7 @@ app.use(getPage.get404);
 //   });
 
 mongoose
-  .connect(
-    "mongodb+srv://kunwarjeetbindra:78Percent@cluster0.rxlpdkz.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0"
-  )
+  .connect(mongoDbUri)
   .then((client) => {
     console.log(client, "connected!");
     app.listen(3000);

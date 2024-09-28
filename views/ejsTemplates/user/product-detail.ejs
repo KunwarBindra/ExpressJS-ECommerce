@@ -23,6 +23,7 @@
         <div style="display: flex; gap: 10px;">
           <form action="/product/add-to-cart" method="POST">
             <input type="hidden" name="id" value="<%= prod._id %>" />
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
             <button type="submit" class="add-to-cart-button">Add to Cart</button>
           </form>
           <button class="back-to-products" onclick="window.history.back()">

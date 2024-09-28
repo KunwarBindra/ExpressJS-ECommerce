@@ -1,18 +1,19 @@
 const express = require("express"); // can be imported into multiple files
 const admin = express.Router(); // admin will act like a mini express app that can be tied or plugged into other express apps
 const addProductHandlers = require("../controllers/admin")
+const isAuth = require("../middleware/is-auth");
 
-admin.post("/edit-product/:productId", addProductHandlers.getEditProductPage);
+admin.post("/edit-product/:productId", isAuth, addProductHandlers.getEditProductPage);
 
-admin.post("/edit-product", addProductHandlers.handleEditProductReq);
+admin.post("/edit-product", isAuth, addProductHandlers.handleEditProductReq);
 
-admin.post("/add-product", addProductHandlers.handleAddProductReq);
+admin.post("/add-product", isAuth, addProductHandlers.handleAddProductReq);
 
-admin.post("/delete-product", addProductHandlers.handleDeleteProductReq);
+admin.post("/delete-product", isAuth, addProductHandlers.handleDeleteProductReq);
 
-admin.get("/add-product", addProductHandlers.getAddProductPage);
+admin.get("/add-product", isAuth, addProductHandlers.getAddProductPage);
 
-admin.get("/products", addProductHandlers.getAdminProductList);
+admin.get("/products", isAuth, addProductHandlers.getAdminProductList);
 
 module.exports = {
   adminRoutes: admin,

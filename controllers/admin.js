@@ -110,6 +110,8 @@ const getEditProductPage = (req, res, next) => {
         edit: true,
         pageTitle: "Edit Product",
         active: "admin-products",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((err) => {
@@ -276,6 +278,8 @@ const getAddProductPage = (req, res, next) => {
     edit: false,
     pageTitle: "Add Product",
     active: "add-product",
+    isAuthenticated: req.session.isLoggedIn,
+    csrfToken: req.csrfToken()
   });
 };
 
@@ -336,6 +340,8 @@ const getAdminProductList = (req, res, next) => {
         prods: products,
         pageTitle: "Admin Products",
         active: "admin-products",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((err) => {
@@ -344,6 +350,8 @@ const getAdminProductList = (req, res, next) => {
         prods: [],
         pageTitle: "Admin Products",
         active: "admin-products",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     });
 };

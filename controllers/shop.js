@@ -51,11 +51,13 @@ const getProductsHome = (req, res, next) => {
         prods: products,
         pageTitle: "Home",
         active: "home",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((err) => {
       console.log(err);
-      res.render("user/home", { prods: [], pageTitle: "Home", active: "home" });
+      res.render("user/home", { prods: [], pageTitle: "Home", active: "home", isAuthenticated: req.session.isLoggedIn, csrfToken: req.csrfToken() });
     });
 };
 
@@ -106,6 +108,8 @@ const getProductDetails = (req, res, next) => {
         prod: result ? result : {},
         pageTitle: result ? result.title : "Product",
         active: "products",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((err) => {
@@ -169,6 +173,8 @@ const getProducts = (req, res, next) => {
         prods: products,
         pageTitle: "Products",
         active: "products",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((err) => {
@@ -177,6 +183,8 @@ const getProducts = (req, res, next) => {
         prods: [],
         pageTitle: "Products",
         active: "products",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     });
 };
@@ -229,6 +237,8 @@ const getCart = (req, res, next) => {
         data: cart,
         pageTitle: "Cart",
         active: "cart",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((err) => {
@@ -362,6 +372,8 @@ const getOrders = (req, res, next) => {
       res.render("user/orders", {
         pageTitle: "Orders",
         active: "orders",
+        isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((err) => console.log(err));
