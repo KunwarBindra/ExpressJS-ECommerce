@@ -1,2 +1,2 @@
 # ExpressJS-ECommerce
-Express.js based product shopping application in progress. 
+MVC architecture based product shopping application built using Express.js. 
